@@ -1,0 +1,8 @@
+{
+  "name": "时空呼吸 - 五一出逃计划",
+  "description": "一款治愈系五一假期交互H5，通过‘时空擦拭’将现实工位转换为次元风景，满足逃离疲惫的情感诉求。",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": []
+}
