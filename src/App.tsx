@@ -351,47 +351,97 @@ function ResultPage({ city, onReset, userPhoto }: any) {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="h-full w-full flex flex-col bg-[#f0f2f5] overflow-y-auto no-scrollbar px-6 py-8"
+      className="h-full w-full flex flex-col bg-[#f8f9fb] overflow-y-auto no-scrollbar px-6 py-10"
     >
-      <div className="shadow-[0_20px_50px_rgba(249,115,22,0.15)] flex-1 flex flex-col rounded-[32px] overflow-hidden bg-white relative">
-        <div className="relative aspect-[9/16] w-full overflow-hidden">
-           <img src={city.img} className="absolute inset-0 w-full h-full object-cover" alt="实景图" />
-           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+      {/* 核心海报区域 */}
+      <div className="shadow-[0_40px_80px_-15px_rgba(0,0,0,0.2)] flex-1 flex flex-col rounded-[32px] overflow-hidden bg-white relative">
+        <div className="relative aspect-[9/16] w-full h-full overflow-hidden">
+           {/* 背景大图 */}
+           <img src={city.img} className="absolute inset-0 w-full h-full object-cover" alt="背景" />
            
-           <div className="absolute inset-x-0 bottom-24 flex items-center justify-center">
-              <div className="w-36 aspect-[9/16] border-[6px] border-white shadow-2xl rounded-2xl overflow-hidden transform rotate-[-2deg]">
-                 <img src={userPhoto} className="w-full h-full object-cover" alt="用户照片" />
-              </div>
+           {/* 层次感遮罩：顶部微暗，底部深色渐变 */}
+           <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/80" />
+           
+           {/* 顶部装饰线与年份 */}
+           <div className="absolute top-8 left-8 right-8 flex justify-between items-center text-white/90">
+              <div className="h-[1px] flex-1 bg-white/30 mr-4" />
+              <span className="text-[10px] font-black tracking-[0.3em] uppercase">M X X V I</span>
+              <div className="h-[1px] flex-1 bg-white/30 ml-4" />
            </div>
 
+           {/* 核心主体：照片框（拍立得质感） */}
+           <div className="absolute inset-0 flex items-center justify-center -mt-12">
+              <motion.div 
+                initial={{ scale: 0.8, opacity: 0, rotate: -10 }}
+                animate={{ scale: 1, opacity: 1, rotate: -3 }}
+                transition={{ type: "spring", damping: 15 }}
+                className="w-[180px] aspect-[3/4] bg-white p-3 pb-12 shadow-[0_30px_60px_-12px_rgba(0,0,0,0.5)] rounded-sm transform"
+              >
+                 <div className="w-full h-full bg-gray-100 overflow-hidden relative">
+                    <img src={userPhoto} className="w-full h-full object-cover" alt="用户" />
+                    <div className="absolute inset-0 block bg-blue-500/10 mix-blend-overlay" />
+                 </div>
+                 {/* 手写感装饰 */}
+                 <div className="absolute bottom-3 left-0 right-0 text-center">
+                    <span className="text-[10px] font-serif italic text-gray-400">Captured in Parallel Space</span>
+                 </div>
+              </motion.div>
+           </div>
+
+           {/* 底部文字信息区 */}
            <div className="absolute bottom-10 left-8 right-8 text-white">
-              <h3 className="text-4xl font-black mb-3 tracking-tighter">{city.name}</h3>
-              <p className="text-xs font-bold text-orange-400 tracking-wide mb-4 italic leading-relaxed">
-                 “叮！我已成功切换至[{city.name}]，五一假期开启。在这里，连空气都是自由的味道。”
+              {/* 地标大标题 - 镂空感或极粗体 */}
+              <motion.div 
+                 initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.3 }}
+                className="flex items-baseline gap-2 mb-2"
+              >
+                <h3 className="text-5xl font-black tracking-tighter italic">{city.name.slice(0, 2)}</h3>
+                <h3 className="text-2xl font-black tracking-tight opacity-80">{city.name.slice(2)}</h3>
+              </motion.div>
+              
+              {/* 分割线 */}
+              <div className="w-12 h-1 bg-orange-500 mb-4" />
+
+              {/* 情感金句 */}
+              <p className="text-xs font-bold text-white/90 tracking-wide mb-6 leading-relaxed">
+                 叮！我已成功切换至<span className="text-orange-400">[{city.name}]</span>，<br />
+                 五一开启。在这里，连空气都是自由的味道。
               </p>
-              <div className="flex justify-between items-end">
-                 <div className="text-[10px] font-medium opacity-60">2026年5月1日</div>
-                 <div className="w-14 h-14 bg-white/10 backdrop-blur-md rounded-xl border border-white/20 grid place-items-center text-[8px] font-black text-white px-2 text-center leading-tight">
-                    保存海报<br/>分享好运
+
+              {/* 页脚详情 */}
+              <div className="flex justify-between items-end border-t border-white/10 pt-4">
+                 <div className="flex flex-col gap-1">
+                    <span className="text-[10px] font-bold text-orange-400 uppercase tracking-widest">Date / 2026.05.01</span>
+                    <span className="text-[9px] font-medium text-white/40">坐标：浙江 · {city.name}</span>
+                 </div>
+                 {/* 模拟二维码区 */}
+                 <div className="w-10 h-10 border border-white/20 rounded-lg flex items-center justify-center p-1">
+                    <div className="w-full h-full bg-white/10 rounded-sm grid grid-cols-2 gap-0.5">
+                       <div className="bg-white/40"></div><div className="bg-white/10"></div>
+                       <div className="bg-white/10"></div><div className="bg-white/40"></div>
+                    </div>
                  </div>
               </div>
            </div>
         </div>
       </div>
 
-      <div className="mt-8 space-y-4">
+      {/* 底部操作按钮 */}
+      <div className="mt-10 space-y-4">
         <div className="grid grid-cols-2 gap-4">
-          <Button variant="primary" className="py-4 px-0 h-16 flex items-center justify-center gap-2 whitespace-nowrap">
+          <Button variant="primary" className="py-4 px-0 h-16 flex items-center justify-center gap-3 whitespace-nowrap text-sm">
             <Download size={20} /> 保存海报
           </Button>
-          <Button variant="outline" onClick={onReset} className="py-4 px-0 h-16 flex items-center justify-center gap-2 whitespace-nowrap">
+          <Button variant="outline" onClick={onReset} className="py-4 px-0 h-16 flex items-center justify-center gap-3 whitespace-nowrap text-sm">
             <RotateCcw size={20} /> 再玩一次
           </Button>
         </div>
         
         <motion.button
            whileTap={{ scale: 0.98 }}
-           className="w-full py-5 bg-blue-600 text-white rounded-[24px] text-sm font-black flex items-center justify-center gap-3 shadow-xl"
+           className="w-full py-5 bg-blue-600 text-white rounded-[24px] text-sm font-black flex items-center justify-center gap-3 shadow-xl transition-all hover:bg-blue-700"
         >
           <Gift size={20} /> 解锁五一专属福利
         </motion.button>
